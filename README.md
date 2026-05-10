@@ -1,56 +1,87 @@
 🛒 E‑commerce Search Application
 -----------------------------
 
-A production‑ready search service for an e‑commerce platform, built using Java 25, Spring Boot 4.0, and Elasticsearch.
+A production‑ready e‑commerce backend service built using Java 25, Spring Boot 4.0, MongoDB, and Elasticsearch.
+The application uses MongoDB as the system of record for all product data and Elasticsearch as a dedicated search index to provide fast, scalable, and flexible search capabilities.
 
-The application provides fast and scalable product search capabilities with full CRUD operations and RESTful APIs.
-
------------------------------
 🚀 Features
----------------------
-
-✅ Create new products
-
-🔍 Search products by name
-
-📦 Retrieve all products
-
-✏️ Update existing product details
-
-🗑️ Delete products
-
-⚡ High‑performance search powered by Elasticsearch
-
+------------------------
+✅ Create new products (persisted in MongoDB)
+🔍 Search products by name using Elasticsearch
+📦 Retrieve all products from MongoDB
+✏️ Update existing product details (MongoDB → Elasticsearch sync)
+🗑️ Delete products (MongoDB + index cleanup in Elasticsearch)
+⚡ High‑performance full‑text search powered by Elasticsearch
 🧱 Clean layered architecture (Controller, Service, Repository)
+https://github.com/user-attachments/assets/a5cf520d-5ae1-4b9c-bca5-7f2d15312d40
 
-<img width="1696" height="1043" alt="Screenshot 2026-05-10 at 11 25 59" src="https://github.com/user-attachments/assets/a5cf520d-5ae1-4b9c-bca5-7f2d15312d40" />
-
---------------------------
 🏗️ Tech Stack
------------------
+---------
 
 Java 25
-
 Spring Boot 4.0
-
+Spring Data MongoDB
 Spring Data Elasticsearch
-
-Elasticsearch 9.x
-
+MongoDB (Primary Database)
+Elasticsearch 9.x (Search Engine)
 Gradle
-
 REST APIs
 
---------------------
+
 🧠 Architecture Overview
--------------------
+-----------
+Controller Layer
+        ↓
+Service Layer
+        ↓
+MongoDB Repository (Primary Data Store)
+        ↓
+Elasticsearch Search Index (Derived Read Model)
 
-Controller Layer  →  Service Layer  →  Repository Layer  →  Elasticsearch
+Responsibilities
+--------------
+-----Controller Layer
 
-Controller → Exposes REST APIs
+Exposes REST APIs for product management and search operations.
 
-Service → Business logic & validations
+-------Service Layer
 
-Repository → Elasticsearch data access
+Contains business logic and coordinates data flow:
 
-Elasticsearch → Search and indexing engine
+Writes to MongoDB
+
+Indexes data into Elasticsearch
+
+
+------MongoDB Repository
+
+
+Acts as the source of truth
+
+Handles all CRUD operations
+
+Ensures data consistency
+
+
+-----Elasticsearch Repository
+
+
+Stores a search‑optimized projection of product data
+
+Enables fast full‑text search, filtering, and relevance ranking
+
+Can be safely rebuilt from MongoDB data at any time
+
+
+✅ Architectural Principles
+--------------
+
+MongoDB is the authoritative datastore
+
+Elasticsearch is a derived, read‑optimized search index
+
+Data is written to MongoDB first, then indexed into Elasticsearch
+
+Elasticsearch is never used for transactions or persistence
+
+This design follows CQRS / Polyglot Persistence best practices

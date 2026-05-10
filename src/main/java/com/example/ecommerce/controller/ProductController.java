@@ -3,6 +3,7 @@ package com.example.ecommerce.controller;
 import com.example.ecommerce.dto.CreateProductRequest;
 import com.example.ecommerce.dto.UpdateProductRequest;
 import com.example.ecommerce.entity.Product;
+import com.example.ecommerce.entity.ProductSearchDocument;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Iterable<Product>> getAllProductsByName(@PathVariable String name) {
+    public ResponseEntity<Iterable<ProductSearchDocument>> getAllProductsByName(@PathVariable String name) {
         return new ResponseEntity<>(productService.getProductByName(name), HttpStatus.OK);
     }
 

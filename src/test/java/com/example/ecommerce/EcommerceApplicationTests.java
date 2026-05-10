@@ -1,6 +1,5 @@
 package com.example.ecommerce;
 
-import com.example.ecommerce.repo.ProductRepo;
 import com.example.ecommerce.repo.ProductSearchRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
